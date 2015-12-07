@@ -1,0 +1,68 @@
+<html>
+<head>
+<title>Hello React</title>
+<script src="http://supnate.github.io/react-tab-selector/js/react.js"></script>
+<script src="http://supnate.github.io/react-tab-selector/js/JSXTransformer.js"></script>
+
+<style type="text/css">
+.selected{color:#f60;}
+</style>
+</head>
+
+<body>
+<div id="container"></div>
+<script type="text/jsx">
+    // var Hello = React.createClass({
+	//     render: function() {
+	//         return <h1>Hello {this.props.name}</h1>;
+	//     }
+	// });
+	 
+	// React.render(<Hello name="World" />, document.getElementById('container'));
+
+     var data = [
+        {name: 'Red', value: 'red'},
+        {name: 'Blue', value: 'blue'},
+        {name: 'Yellow', value: 'yellow'},
+        {name: 'Green', value: 'green'},
+        {name: 'White', value: 'White'}
+      ];
+
+      var TabSelector22 = React.createClass({
+        getInitialState: function() {
+          return {selected: this.props.selected};
+        },
+
+        handleOnClick: function (evt) {
+          this.setState({'selected': evt.target.getAttribute('data-value')})
+        },
+
+        render: function() {
+          var tabs = this.props.data.map(function (item) {
+            var selected = item.value == this.state.selected ? 'selected' : '';
+            return <li data-value={item.value}
+                className={selected}
+                onClick={this.handleOnClick}
+              >{item.name}</li>
+            ;
+          }, this);
+
+          return <div className="tab-selector">
+            <label>{this.props.label}</label>
+            <ul>
+              {tabs}
+            </ul>
+          </div>
+          ;
+        }
+      });
+
+      React.render(
+        TabSelector22({label: 'Color', data: data, selected: null}),
+        document.getElementById('container')
+      );
+
+</script>
+</body>
+
+</html>
