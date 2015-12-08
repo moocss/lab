@@ -47,9 +47,12 @@
 
 		 window.setInterval(function(){
 		 	 var date = new Date();
-		 	 hourElement.innerText = date.getHours();
-		 	 minuteElement.innerText = date.getMinutes();
-		 	 secondElement.innerText = date.getSeconds();
+		 	 var h = date.getHours();
+		 	 hourElement.innerText = h<10 ? '0'+h : h;
+		 	 var m = date.getMinutes();
+		 	 minuteElement.innerText = m<10 ? '0'+m : m;
+		 	 var s = date.getSeconds();
+		 	 secondElement.innerText = s<10 ? '0'+s : s;
 		 },1000);
 	};
 	var digitalClockElement = document.registerElement('digital-clock',{
