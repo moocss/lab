@@ -1,0 +1,12 @@
+{
+    "name": "kui",
+    "version": "0.1.0",
+	"description": "a simple UI for webapp",
+	"author": "putaoshu <putaoshu@126.com>",
+    "devDependencies": {
+		"grunt-contrib-jshint": "~0.2.0",
+		"grunt-contrib-uglify": "~0.1.2",
+		"grunt-contrib-concat": "~0.1.1",
+		"grunt": "~0.4.1"
+    }
+}

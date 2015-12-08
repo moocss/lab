@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>同域下iframe autoHeight</title>
+<style type="text/css">
+body,iframe{margin:0;padding:0;}
+</style>
+
+<script type="text/javascript">
+	//页面主体和iframe同时设置document.domain
+	document.domain = 'jd.com';
+	
+	function autoIframe(o) {
+		o.style.height = o.contentWindow.document.body.scrollHeight + 'px';
+	}
+</script>
+
+</head>
+<body>
+
+<p>hello world!</p>
+<iframe name="Stack" src="http://www.jd.com/" frameborder="0" scrolling="no" id="iframe" onload='javascript:autoIframe(this);' width="100%"/>
+
+</body>
+</html>
