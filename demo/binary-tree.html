@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>binary tree</title>
+</head>
+<body>
+<div id="res"></div>
+
+<script type="text/javascript">
+//http://www.cnblogs.com/ghostgift/archive/2013/03/04/2941723.html
+
+/*
+ *二叉树的节点对象
+ */
+function Node() {
+    this.text = '';           //节点的文本
+    this.leftChild = null;    //节点的左孩子引用
+    this.rightChild = null;   //节点右孩子引用
+}
+
+var charecters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
+
+function buildTree(node, i) {
+    var leftIndex = 2*i+1,                          //左孩子节点的索引
+        rightIndex = 2*i+2;                         //右孩子节点的索引
+    if(leftIndex < charecters.length) {             //判断索引的长度是否超过了charecters数组的大小
+        var childNode = new Node();                 //创建一个新的节点对象
+        childNode.text = charecters[leftIndex];     //给节点赋值
+        node.leftChild = childNode;                 //给当前节点node加入左孩子节点
+        buildTree(childNode, leftIndex);            //递归创建左孩子
+    }
+    if(rightIndex < charecters.length) {            //下面注释参照上面的构建左孩子的节点
+        var childNode = new Node();
+        childNode.text = charecters[rightIndex];
+        node.rightChild = childNode;
+        buildTree(childNode, rightIndex);
+    }
+}
+
+//下面构造二叉树
+var node = new Node();
+node.text = charecters[0];
+buildTree(node, 0);   //索引i是从0开始构建
+
+if(typeof(JSON) != "undefined"){
+    document.getElementById('res').innerHTML = JSON.stringify(node);
+}
+
+</script>
+</body>
+</html>
