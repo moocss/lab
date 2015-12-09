@@ -1,0 +1,53 @@
+<polymer-element name="ts-clock">
+	<template bind="{{clock}}">
+		<style>
+			:host .clock{
+				display: inline-flex;
+				justify-content:space-around;
+				background: white;
+				font-size: 8rem;
+				box-shadow: 2px 2px 4px -1px #ccc;
+				border: 1px solid green;
+				font-family: Helvetica, sans-serif;
+				width: 100%;
+			}
+			:host .clock .hour,
+			:host .clock .minute,
+			:host .clock .second{
+				color: orange;
+				padding: 1.5rem;
+				text-shadow: 0px 2px black;
+			}
+		</style>
+		<div class="clock">
+			<div class="hour">{{ clock.hour }}</div>
+			<div class="minute">{{ clock.minute }}</div>
+			<div class="second">{{ clock.second}}</div>
+		</div>
+	</template>
+	<script>
+		Polymer({
+			ready:function(){
+				this.updateClock();
+			},
+			updateClock:function(){
+				var date = new Date();
+			
+				var h = date.getHours();
+				h = h<10 ? '0'+h : h;
+				var m = date.getMinutes();
+				m = m<10 ? '0'+m : m;
+				var s = date.getSeconds();
+				s = s<10 ? '0'+s : s;
+
+				this.clock = {
+					hour:h,
+					minute:m,
+					second:s
+				};
+
+				this.async(this.updateClock, null, 1000);
+			}
+		});
+	</script>
+</polymer-element>
