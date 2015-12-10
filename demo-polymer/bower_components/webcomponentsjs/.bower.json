@@ -24,7 +24,7 @@
     "tag": "v0.7.19",
     "commit": "d2b2329a8453e93b0d0c4949bb83e7166088adaf"
   },
-  "_source": "git://github.com/Polymer/webcomponentsjs.git",
-  "_target": "^0.7.18",
-  "_originalSource": "webcomponentsjs"
+  "_source": "git://github.com/webcomponents/webcomponentsjs.git",
+  "_target": "^0.7.0",
+  "_originalSource": "webcomponents/webcomponentsjs"
 }

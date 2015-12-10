@@ -1,0 +1,7 @@
+{
+  "name": "polymer",
+  "dependencies": {
+    "polymer": "Polymer/polymer#^1.1.0",
+    "webcomponentsjs": "webcomponents/webcomponentsjs#^0.7.0"
+  }
+}

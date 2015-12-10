@@ -1,8 +1,8 @@
 polymer
 ==
 
-1. install 
+1.install 
 
-	bower install -save Polymer/polymer
+	bower install
 
 @2015-12-9
