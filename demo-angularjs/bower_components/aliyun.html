@@ -1,0 +1,1044 @@
+<!DOCTYPE html>
+<html lang="zh-cn" class="no-js">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="data-spm" content="5176"/>
+<title>OOS价格计算</title>
+<!-- http://www.aliyun.com/product/oss/recommend.html -->
+<style>
+    .y-row{min-width:1000px;max-width:1200px;margin-left:auto;margin-right:auto;zoom:1;*width:1000px}.y-row:after{visibility:hidden;display:block;font-size:0;content:" ";clear:both;height:0}.y-row .y-span1,.y-row .y-span2,.y-row .y-span3,.y-row .y-span4,.y-row .y-span5,.y-row .y-span6,.y-row .y-span7,.y-row .y-span8,.y-row .y-span9,.y-row .y-span10,.y-row .y-span11,.y-row .y-span12,.y-row .y-span13,.y-row .y-span14,.y-row .y-span15{float:left;display:inline;margin-right:2%;*margin-right:20px}.y-row .y-span1{width:6.5%;*width:65px}.y-row .y-span2{width:15%;*width:150px}.y-row .y-span3{width:23.5%;*width:235px}.y-row .y-span4{width:32%;*width:320px}.y-row .y-span5{width:40.5%;*width:405px}.y-row .y-span6{width:49%;*width:490px}.y-row .y-span7{width:57.5%;*width:575px}.y-row .y-span8{width:66%;*width:660px}.y-row .y-span9{width:74.5%;*width:745px}.y-row .y-span10{width:83%;*width:830px}.y-row .y-span11{width:91.5%;*width:915px}.y-row .y-span12{width:100%;*width:1000px;}.y-row .y-span13{width:100%;*width:1000px;border:1px solid #e5e5e5;background-color: #fafafa;}.y-row .y-span14{background-color: white; width:53%;*width:580px}.y-row .y-span15{width:45%;*width:400px}.y-row .y-last{margin-bottom:20px;margin-right:0!important}.bk-form-control{height: 18px; padding: 10px 10px 2px 0;} .bk-form-input-l2{ width: 215px !important; } .bk-form-input{ height: 35px !important; } 
+    .bk-form-row{ padding: 0 30px 10px !important; }
+    html body .bk-form-input{ padding:0px 10px 0px 10px !important; }
+</style>
+
+<link rel="stylesheet" type="text/css" href="//g.alicdn.com/aliyun/ossCalculator/0.0.8/styles/common.min.css" />
+
+<script>
+    if (!window.console) {
+        window.console = {
+            log: function(info) {
+                return false
+            }
+        }
+    }
+
+    var ALIYUN_OSSCALCULATOR_CONSOLE_CONFIG = {
+        SEC_TOKEN: "eXzIWH5Bna1HAWOCKHBg6",
+        BYTE_UNITS: [{
+            "name": "KB",
+            "value": 1 / Math.pow(1024, 2)
+        }, {
+            "name": "MB",
+            "value": 1 / 1024,
+            "isDefault": true
+        }, {
+            "name": "GB",
+            "value": 1
+        }, {
+            "name": "TB",
+            "value": 1024
+        }, {
+            "name": "PB",
+            "value": 1048576
+        }],
+        REGION_UNITS: [{
+                "name": "北京",
+                "value": "Beijing"
+            }, {
+                "name": "深圳",
+                "value": "Shenzhen",
+                "isDefault": true
+            }, // 默认选中
+            // {
+            //     "name": "上海",
+            //     "value": "Shanghai"
+            // }, 
+            // {
+            //     "name": "杭州",
+            //     "value": "Hangzhou"
+            // }, 
+
+            // {
+            //     "name": "青岛",
+            //     "value": "Qingdao"
+            // }, {
+            //     "name": "香港",
+            //     "value": "HongKong"
+            // }, {
+            //     "name": "北美",
+            //     "value": "NorthAmeric"
+            // }, {
+            //     "name": "新加坡",
+            //     "value": "Singapore"
+            // }
+        ],
+        REQUEST_RULE: {
+            "getHead": {
+                "mainland": {
+                    "requestUnit": "TTD",
+                    "currency": "RMB",
+                    "priceUnit": "Yuan",
+                    "detail": {
+                        "Shenzhen": 0.01,
+                        "Shanghai": 0.01,
+                        "Qingdao": 0.01,
+                        "Beijing": 0.01,
+                        "Hangzhou": 0.01,
+                        "HongKong": 0.01,
+                    }
+                },
+                "NorthAmeric": {
+                    "requestUnit": "TTD",
+                    "currency": "RMB",
+                    "priceUnit": "Yuan",
+                    "detail": {
+                        "NorthAmeric": 0.01
+                    }
+                },
+                "Singapore": {
+                    "requestUnit": "TTD",
+                    "currency": "RMB",
+                    "priceUnit": "Yuan",
+                    "detail": {
+                        "Singapore": 0.01
+                    }
+                }
+            },
+            "getBucket": {
+                "mainland": {
+                    "requestUnit": "TTD",
+                    "currency": "RMB",
+                    "priceUnit": "Yuan",
+                    "detail": {
+                        "Shenzhen": 0.01,
+                        "Shanghai": 0.01,
+                        "Qingdao": 0.01,
+                        "Beijing": 0.01,
+                        "Hangzhou": 0.01,
+                        "HongKong": 0.01,
+                    }
+                },
+                "NorthAmeric": {
+                    "requestUnit": "TTD",
+                    "currency": "RMB",
+                    "priceUnit": "Yuan",
+                    "detail": {
+                        "NorthAmeric": 0.01
+                    }
+                },
+                "Singapore": {
+                    "requestUnit": "TTD",
+                    "currency": "RMB",
+                    "priceUnit": "Yuan",
+                    "detail": {
+                        "Singapore": 0.01
+                    }
+                }
+            },
+            "other": {
+                "mainland": {
+                    "requestUnit": "TTD",
+                    "currency": "RMB",
+                    "priceUnit": "Yuan",
+                    "detail": {
+                        "Shenzhen": 0.01,
+                        "Shanghai": 0.01,
+                        "Qingdao": 0.01,
+                        "Beijing": 0.01,
+                        "Hangzhou": 0.01,
+                        "HongKong": 0.01,
+                    }
+                },
+                "NorthAmeric": {
+                    "requestUnit": "TTD",
+                    "currency": "RMB",
+                    "priceUnit": "Yuan",
+                    "detail": {
+                        "NorthAmeric": 0.1
+                    }
+                },
+                "Singapore": {
+                    "requestUnit": "TTD",
+                    "currency": "RMB",
+                    "priceUnit": "Yuan",
+                    "detail": {
+                        "Singapore": 0.1
+                    }
+                }
+            }
+        },
+        STORAGE_RULE: {
+            "mainland": {
+                "storageUnit": "GB",
+                "currency": "RMB",
+                "priceUnit": "Yuan",
+                "detail": {
+                    "Qingdao": [{
+                        "range": "0-50TB",
+                        "value": 0.149
+                    }, {
+                        "range": "50TB-500TB",
+                        "value": 0.145
+                    }, {
+                        "range": "500TB-MAX",
+                        "value": 0.14
+                    }],
+                    "Beijing": [{
+                        "range": "0-50TB",
+                        "value": 0.158
+                    }, {
+                        "range": "50TB-500TB",
+                        "value": 0.145
+                    }, {
+                        "range": "500TB-MAX",
+                        "value": 0.14
+                    }],
+                    "Shenzhen": [{
+                        "range": "0-50TB",
+                        "value": 0.158
+                    }, {
+                        "range": "50TB-500TB",
+                        "value": 0.153
+                    }, {
+                        "range": "500TB-MAX",
+                        "value": 0.149
+                    }],
+                    "Shanghai": [{
+                        "range": "0-50TB",
+                        "value": 0.158
+                    }, {
+                        "range": "50TB-500TB",
+                        "value": 0.153
+                    }, {
+                        "range": "500TB-MAX",
+                        "value": 0.149
+                    }],
+                    "Hangzhou": [{
+                        "range": "0-50TB",
+                        "value": 0.165
+                    }, {
+                        "range": "50TB-500TB",
+                        "value": 0.162
+                    }, {
+                        "range": "500TB-MAX",
+                        "value": 0.157
+                    }],
+                    "HongKong": [{
+                        "range": "0-50TB",
+                        "value": 0.44
+                    }, {
+                        "range": "50TB-500TB",
+                        "value": 0.43
+                    }, {
+                        "range": "500TB-MAX",
+                        "value": 0.41
+                    }]
+                }
+            },
+            "NorthAmeric": {
+                "storageUnit": "GB",
+                "currency": "RMB",
+                "priceUnit": "Yuan",
+                "detail": {
+                    "NorthAmeric": [{
+                        "range": "0-50TB",
+                        "value": 0.165
+                    }, {
+                        "range": "50TB-500TB",
+                        "value": 0.162
+                    }, {
+                        "range": "500TB-MAX",
+                        "value": 0.157
+                    }]
+                }
+            },
+            "Singapore": {
+                "storageUnit": "GB",
+                "currency": "RMB",
+                "priceUnit": "Yuan",
+                "detail": {
+                    "Singapore": [{
+                        "range": "0-50TB",
+                        "value": 0.186
+                    }, {
+                        "range": "50TB-500TB",
+                        "value": 0.182
+                    }, {
+                        "range": "500TB-MAX",
+                        "value": 0.177
+                    }]
+                }
+            }
+        },
+        TRAFFIC_RULE: {
+            "descendingFlow": {
+                "mainland": {
+                    "flowUnit": "GB",
+                    "currency": "RMB",
+                    "priceUnit": "Yuan",
+                    "detail": {
+                        "Shenzhen": [{
+                            "range": "0-500GB",
+                            "bussy": 0.64,
+                            "idel": 0.375
+                        }, {
+                            "range": "500GB-2TB",
+                            "bussy": 0.6,
+                            "idel": 0.35
+                        }, {
+                            "range": "2TB-10TB",
+                            "bussy": 0.58,
+                            "idel": 0.325
+                        }, {
+                            "range": "10TB-MAX",
+                            "bussy": 0.56,
+                            "idel": 0.3
+                        }],
+                        "Shanghai": [{
+                            "range": "0-500GB",
+                            "bussy": 0.64,
+                            "idel": 0.375
+                        }, {
+                            "range": "500GB-2TB",
+                            "bussy": 0.6,
+                            "idel": 0.35
+                        }, {
+                            "range": "2TB-10TB",
+                            "bussy": 0.58,
+                            "idel": 0.325
+                        }, {
+                            "range": "10TB-MAX",
+                            "bussy": 0.56,
+                            "idel": 0.3
+                        }],
+                        "Qingdao": [{
+                            "range": "0-500GB",
+                            "bussy": 0.675,
+                            "idel": 0.338
+                        }, {
+                            "range": "500GB-2TB",
+                            "bussy": 0.63,
+                            "idel": 0.315
+                        }, {
+                            "range": "2TB-10TB",
+                            "bussy": 0.585,
+                            "idel": 0.293
+                        }, {
+                            "range": "10TB-MAX",
+                            "bussy": 0.54,
+                            "idel": 0.27
+                        }],
+                        "Beijing": [{
+                            "range": "0-500GB",
+                            "bussy": 0.75,
+                            "idel": 0.375
+                        }, {
+                            "range": "500GB-2TB",
+                            "bussy": 0.7,
+                            "idel": 0.35
+                        }, {
+                            "range": "2TB-10TB",
+                            "bussy": 0.65,
+                            "idel": 0.325
+                        }, {
+                            "range": "10TB-MAX",
+                            "bussy": 0.6,
+                            "idel": 0.3
+                        }],
+                        "Hangzhou": [{
+                            "range": "0-500GB",
+                            "bussy": 0.75,
+                            "idel": 0.375
+                        }, {
+                            "range": "500GB-2TB",
+                            "bussy": 0.7,
+                            "idel": 0.35
+                        }, {
+                            "range": "2TB-10TB",
+                            "bussy": 0.65,
+                            "idel": 0.325
+                        }, {
+                            "range": "10TB-MAX",
+                            "bussy": 0.6,
+                            "idel": 0.3
+                        }],
+                        "HongKong": [{
+                            "range": "0-500GB",
+                            "bussy": 1,
+                            "idel": 1
+                        }, {
+                            "range": "500GB-2TB",
+                            "bussy": 1,
+                            "idel": 1
+                        }, {
+                            "range": "2TB-10TB",
+                            "bussy": 1,
+                            "idel": 1
+                        }, {
+                            "range": "10TB-MAX",
+                            "bussy": 1,
+                            "idel": 1
+                        }]
+                    }
+                },
+                "NorthAmeric": {
+                    "flowUnit": "GB",
+                    "currency": "RMB",
+                    "priceUnit": "Yuan",
+                    "detail": {
+                        "NorthAmeric": [{
+                            "range": '0-10TB',
+                            "bussy": 0.5,
+                            "idel": 0.5
+                        }, {
+                            "range": '10TB-50TB',
+                            "bussy": 0.46,
+                            "idel": 0.46
+                        }, {
+                            "range": '50TB-150TB',
+                            "bussy": 0.39,
+                            "idel": 0.39
+                        }, {
+                            "range": '150TB-MAX',
+                            "bussy": 0.28,
+                            "idel": 0.28
+                        }]
+                    }
+                },
+                "Singapore": {
+                    "flowUnit": "GB",
+                    "currency": "RMB",
+                    "priceUnit": "Yuan",
+                    "detail": {
+                        "Singapore": [{
+                            "range": '0-10TB',
+                            "bussy": 0.75,
+                            "idel": 0.75
+                        }, {
+                            "range": '10TB-50TB',
+                            "bussy": 0.75,
+                            "idel": 0.75
+                        }, {
+                            "range": '50TB-150TB',
+                            "bussy": 0.75,
+                            "idel": 0.75
+                        }, {
+                            "range": '150TB-MAX',
+                            "bussy": 0.64,
+                            "idel": 0.64
+                        }]
+                    }
+                }
+            },
+            "cdnFlow": {
+                "mainland": {
+                    "flowUnit": "GB",
+                    "currency": "RMB",
+                    "priceUnit": "Yuan",
+                    "detail": {
+                        "Shenzhen": [{
+                            "range": "0-10TB",
+                            "bussy": 0.36,
+                            "idel": 0.36
+                        }, {
+                            "range": "10TB-50TB",
+                            "bussy": 0.32,
+                            "idel": 0.32
+                        }, {
+                            "range": "50TB-100TB",
+                            "bussy": 0.3,
+                            "idel": 0.3
+                        }, {
+                            "range": "100TB-MAX",
+                            "bussy": 0.26,
+                            "idel": 0.26
+                        }],
+                        "Shanghai": [{
+                            "range": "0-10TB",
+                            "bussy": 0.36,
+                            "idel": 0.36
+                        }, {
+                            "range": "10TB-50TB",
+                            "bussy": 0.32,
+                            "idel": 0.32
+                        }, {
+                            "range": "50TB-100TB",
+                            "bussy": 0.3,
+                            "idel": 0.3
+                        }, {
+                            "range": "100TB-MAX",
+                            "bussy": 0.26,
+                            "idel": 0.26
+                        }],
+                        "Qingdao": [{
+                            "range": "0-10TB",
+                            "bussy": 0.36,
+                            "idel": 0.36
+                        }, {
+                            "range": "10TB-50TB",
+                            "bussy": 0.32,
+                            "idel": 0.32
+                        }, {
+                            "range": "50TB-100TB",
+                            "bussy": 0.3,
+                            "idel": 0.3
+                        }, {
+                            "range": "100TB-MAX",
+                            "bussy": 0.26,
+                            "idel": 0.26
+                        }],
+                        "Beijing": [{
+                            "range": "0-10TB",
+                            "bussy": 0.36,
+                            "idel": 0.36
+                        }, {
+                            "range": "10TB-50TB",
+                            "bussy": 0.32,
+                            "idel": 0.32
+                        }, {
+                            "range": "50TB-100TB",
+                            "bussy": 0.3,
+                            "idel": 0.3
+                        }, {
+                            "range": "100TB-MAX",
+                            "bussy": 0.26,
+                            "idel": 0.26
+                        }],
+                        "Hangzhou": [{
+                            "range": "0-10TB",
+                            "bussy": 0.36,
+                            "idel": 0.36
+                        }, {
+                            "range": "10TB-50TB",
+                            "bussy": 0.32,
+                            "idel": 0.32
+                        }, {
+                            "range": "50TB-100TB",
+                            "bussy": 0.3,
+                            "idel": 0.3
+                        }, {
+                            "range": "100TB-MAX",
+                            "bussy": 0.26,
+                            "idel": 0.26
+                        }],
+                        "HongKong": [{
+                            "range": "0-10TB",
+                            "bussy": 0.36,
+                            "idel": 0.36
+                        }, {
+                            "range": "10TB-50TB",
+                            "bussy": 0.32,
+                            "idel": 0.32
+                        }, {
+                            "range": "50TB-100TB",
+                            "bussy": 0.3,
+                            "idel": 0.3
+                        }, {
+                            "range": "100TB-MAX",
+                            "bussy": 0.26,
+                            "idel": 0.26
+                        }]
+                    }
+                },
+                "NorthAmeric": {
+                    "flowUnit": "GB",
+                    "currency": "RMB",
+                    "priceUnit": "Yuan",
+                    "detail": {
+                        "NorthAmeric": [{
+                            "range": "0-10TB",
+                            "bussy": 0.36,
+                            "idel": 0.36
+                        }, {
+                            "range": "10TB-50TB",
+                            "bussy": 0.32,
+                            "idel": 0.32
+                        }, {
+                            "range": "50TB-100TB",
+                            "bussy": 0.3,
+                            "idel": 0.3
+                        }, {
+                            "range": "100TB-MAX",
+                            "bussy": 0.26,
+                            "idel": 0.26
+                        }]
+                    }
+                },
+                "Singapore": {
+                    "flowUnit": "GB",
+                    "currency": "RMB",
+                    "priceUnit": "Yuan",
+                    "detail": {
+                        "Singapore": [{
+                            "range": "0-10TB",
+                            "bussy": 0.75,
+                            "idel": 0.75
+                        }, {
+                            "range": "10TB-50TB",
+                            "bussy": 0.75,
+                            "idel": 0.75
+                        }, {
+                            "range": "50TB-100TB",
+                            "bussy": 0.75,
+                            "idel": 0.75
+                        }, {
+                            "range": "100TB-MAX",
+                            "bussy": 0.64,
+                            "idel": 0.64
+                        }]
+                    }
+                }
+            },
+            "returnFlow": {
+                "mainland": {
+                    "flowUnit": "GB",
+                    "currency": "RMB",
+                    "priceUnit": "Yuan",
+                    "detail": {
+                        "Shenzhen": 0.15,
+                        "Shanghai": 0.15,
+                        "Qingdao": 0.15,
+                        "Beijing": 0.15,
+                        "Hangzhou": 0.15,
+                        "HongKong": 1,
+                    }
+                },
+                "NorthAmeric": {
+                    "flowUnit": "GB",
+                    "currency": "RMB",
+                    "priceUnit": "Yuan",
+                    "detail": {
+                        "NorthAmeric": 0.5
+                    }
+                },
+                "Singapore": {
+                    "flowUnit": "GB",
+                    "currency": "RMB",
+                    "priceUnit": "Yuan",
+                    "detail": {
+                        "Singapore": 0.75
+                    }
+                }
+            }
+        },
+        BUSINESS_GROUPS: [ // 场景组,可以配置多个场景组
+            {
+                "id": "byOSSResource", // 不能为空，和其他场景组的id不能重复
+                "name": "按用量估算成本", // 显示在Tab页上的文案
+                "isDefault": true, // 是否默认被激活
+                "scenes": [ // 场景,一个场景组下可以包含多个场景
+                    {
+                        "id": "normal", // 不能为空，同一个场景组下的场景id不能重复--移动音视频应用
+                        "name": "按资源使用估算",
+                        "isDefault": true, // 是否默认被激活
+                        "commonOperands": [{ // 操作因子,可以配置多个操作因子
+                            "id": "useRegion", // 不能为空，同一个场景下的操作因子id不能重复
+                            "name": "使用区域", // 显示文案
+                            "type": "select", // 操作因子类型,枚举值
+                            "units": "regionUnits"
+                        }, {
+                            "id": "storage",
+                            "name": "存储所需空间",
+                            "type": "textFieldSelect",
+                            "units": [{
+                                "name": "KB",
+                                "value": 1 / Math.pow(1024, 2)
+                            }, {
+                                "name": "MB",
+                                "value": 1 / 1024
+                            }, {
+                                "name": "GB",
+                                "value": 1,
+                                "isDefault": true
+                            }, {
+                                "name": "TB",
+                                "value": 1024
+                            }, {
+                                "name": "PB",
+                                "value": 1048576
+                            }]
+                        }, {
+                            "id": "request",
+                            "name": "请求数据次数",
+                            "type": "textFieldSelect",
+                            "units": [{
+                                "name": "万次/月",
+                                "value": "1"
+                            }]
+                        }, {
+                            "id": "network",
+                            "name": "流量",
+                            "type": "radioButtonWithTextFieldSelect",
+                            "units": [{
+                                "name": "KB",
+                                "value": 1 / Math.pow(1024, 2)
+                            }, {
+                                "name": "MB",
+                                "value": 1 / 1024
+                            }, {
+                                "name": "GB",
+                                "value": 1,
+                                "isDefault": true
+                            }, {
+                                "name": "TB",
+                                "value": 1024
+                            }, {
+                                "name": "PB",
+                                "value": 1048576
+                            }]
+                        }],
+                        "subScenes": [ // 子业务场景
+                            {
+                                "id": "useCDN",
+                                "name": "使用CDN加速",
+                                "isDefault": false,
+                                "expression": { // 表达式
+                                    "id": "useCDN",
+                                    "formula": "@storageFee + @cdnNetworkFee + @requestFee", // 公式，@符号表示使用子表达式的值
+                                    "subExpression": { // 子表达式
+                                        "storageFee": { // key 对应子表达式的id
+                                            "id": "storageFee", //存储费：区域存储费用单价 *  存储量
+                                            "name": "存储费", // 子表达式显示文案
+                                            "formula": "REGION_STORAGE_UNIT_PRICE * #storage", // 公式，全大写的常量对应一种计费规则
+                                            "rule": { // 描述公式的依赖规则
+                                                "REGION_STORAGE_UNIT_PRICE": "#storage" // #符号表示使用操作因子的值
+                                            }
+                                        },
+                                        "requestFee": {
+                                            "id": "requestFee", //请求单价 * 请求数
+                                            "name": "请求数费",
+                                            "formula": "REQUEST_UNIT_PRICE * #request",
+                                            "rule": {
+                                                "REQUEST_UNIT_PRICE": "#request"
+                                            }
+                                        },
+                                        "cdnNetworkFee": {
+                                            "id": "cdnNetworkFee", //流量 * 阶梯CDN流量单价  
+                                            "name": "CDN流量费",
+                                            "formula": "CDN_FLOW_UNIT_PRICE * #network",
+                                            "rule": {
+                                                "CDN_FLOW_UNIT_PRICE": "#network"
+                                            }
+                                        }
+                                    }
+                                }
+                            }, { // 子业务场景，同上
+                                "id": "withoutCDN",
+                                "name": "不使用CDN加速",
+                                "isDefault": true,
+                                "expression": {
+                                    "id": "withoutCDN",
+                                    "formula": "@storageFee + @ossNetworkFee + @requestFee",
+                                    "subExpression": {
+                                        "storageFee": {
+                                            "id": "storageFee",
+                                            "name": "存储费",
+                                            "formula": "REGION_STORAGE_UNIT_PRICE * #storage",
+                                            "rule": {
+                                                "REGION_STORAGE_UNIT_PRICE": "#storage"
+                                            }
+                                        },
+                                        "requestFee": {
+                                            "id": "requestFee",
+                                            "name": "请求数费",
+                                            "formula": "REQUEST_UNIT_PRICE * #request",
+                                            "rule": {
+                                                "REQUEST_UNIT_PRICE": "#request"
+                                            }
+                                        },
+                                        "ossNetworkFee": {
+                                            "id": "ossNetworkFee", //：//流量 * OSS流量单价  
+                                            "name": "流量费",
+                                            "formula": "DECEND_FLOW_UNIT_PRICE * #network",
+                                            "rule": {
+                                                "DECEND_FLOW_UNIT_PRICE": "#network"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+
+                        ]
+                    }
+                ]
+            }, { // group2
+                "id": "byBusinessScene", // 不能为空，和其他场景组的id不能重复
+                "name": "按业务场景估算成本", // 显示在Tab页上的文案
+                "isDefault": false, // 是否默认被激活
+                "scenes": [ // 场景,一个场景组下可以包含多个场景
+                    {
+                        "id": "mobileAudioAndVideo", // 不能为空，同一个场景组下的场景id不能重复--移动音视频应用
+                        "name": "移动音视频UGC应用",
+                        "isDefault": true, // 是否默认被激活
+                        "commonOperands": [{ // 操作因子,可以配置多个操作因子
+                            "id": "useRegion", // 不能为空，同一个场景下的操作因子id不能重复
+                            "name": "使用区域", // 显示文案
+                            "type": "select", // 操作因子类型,枚举值
+                            "units": "regionUnits"
+                        }, {
+                            "id": "storage",
+                            "name": "总存储量",
+                            "type": "textFieldSelect",
+                            "units": [{
+                                "name": "KB",
+                                "value": 1 / Math.pow(1024, 2)
+                            }, {
+                                "name": "MB",
+                                "value": 1 / 1024
+                            }, {
+                                "name": "GB",
+                                "value": 1,
+                                "isDefault": true
+                            }, {
+                                "name": "TB",
+                                "value": 1024
+                            }, {
+                                "name": "PB",
+                                "value": 1048576
+                            }]
+                        }, {
+                            "id": "vistAmount",
+                            "name": "网站每月访问",
+                            "type": "textFieldSelect",
+                            "units": [{
+                                "name": "人次",
+                                "value": "1"
+                            }]
+                        }, {
+                            "id": "sourceFileAmount",
+                            "name": "人均访问文件数",
+                            "type": "textFieldSelect",
+                            "units": [{
+                                "name": "个",
+                                "value": "1"
+                            }]
+                        }, {
+                            "id": "fileAvgSize",
+                            "name": "文件平均大小",
+                            "type": "textFieldSelect",
+                            "units": "byteUnits"
+                        }, {
+                            "id": "ifUseCdn",
+                            "name": "是否使用CDN加速",
+                            "type": "radioButton"
+                        }],
+                        "subScenes": [ // 子业务场景
+                            {
+                                "id": "useCDN",
+                                "name": "使用CDN加速",
+                                "isDefault": false,
+                                "expression": { // 表达式
+                                    "id": "useCDN",
+                                    "formula": "@storageFee + @cdnNetworkFee + @ossBackToResourceFee + @requestFee", // 公式，@符号表示使用子表达式的值
+                                    "subExpression": { // 子表达式
+                                        "storageFee": { // key 对应子表达式的id
+                                            "id": "storageFee", //存储费：区域存储费用单价 * 总存储量 
+                                            "name": "存储费", // 子表达式显示文案
+                                            "formula": "REGION_STORAGE_UNIT_PRICE * #storage", // 公式，全大写的常量对应一种计费规则
+                                            "rule": { // 描述公式的依赖规则
+                                                "REGION_STORAGE_UNIT_PRICE": "#storage" // #符号表示使用操作因子的值
+                                            }
+                                        },
+                                        "requestFee": {
+                                            "id": "requestFee", //按存储费用+流量费用的3%估算。即（存储费+流量费） * 3%
+                                            "name": "请求数费",
+                                            "formula": "(@storageFee + @ossBackToResourceFee)* 0.03"
+                                        },
+                                        "ossBackToResourceFee": {
+                                            "id": "ossBackToResourceFee", ////文件大小 * 文件数量 * 区域回源流量单价（按回源一次算）
+                                            "name": "回源流量费",
+                                            "formula": "RETURN_FLOW_UNIT_PRICE * #fileAvgSize * #sourceFileAmount",
+                                            "rule": {
+                                                "RETURN_FLOW_UNIT_PRICE": "#fileAvgSize * #sourceFileAmount "
+                                            }
+                                        },
+                                        "cdnNetworkFee": {
+                                            "id": "cdnNetworkFee", //文件大小 * 文件数量 * 访问人数 * 阶梯CDN流量单价  
+                                            "name": "CDN流量费",
+                                            "formula": "CDN_FLOW_UNIT_PRICE * #fileAvgSize * #sourceFileAmount * #vistAmount",
+                                            "rule": {
+                                                "CDN_FLOW_UNIT_PRICE": "#fileAvgSize * #sourceFileAmount * #vistAmount"
+                                            }
+                                        }
+                                    }
+                                }
+                            }, { // 子业务场景，同上
+                                "id": "withoutCDN",
+                                "name": "不使用CDN加速",
+                                "isDefault": true,
+                                "expression": {
+                                    "id": "withoutCDN",
+                                    "formula": "@storageFee + @ossNetworkFee + @requestFee",
+                                    "subExpression": {
+                                        "storageFee": {
+                                            "id": "storageFee",
+                                            "name": "存储费",
+                                            "formula": "REGION_STORAGE_UNIT_PRICE * #storage",
+                                            "rule": {
+                                                "REGION_STORAGE_UNIT_PRICE": "#storage"
+                                            }
+                                        },
+                                        "requestFee": {
+                                            "id": "requestFee",
+                                            "name": "请求数费",
+                                            "formula": "(@storageFee + @ossNetworkFee)* 0.03"
+                                        },
+                                        "ossNetworkFee": {
+                                            "id": "ossNetworkFee", //：（区域OSS下行流量单价 * 文件大小 * 文件数量 * 访问人数） - (（区域OSS下行流量单价 * 文件大小 * 文件数量 * 访问人数）* 15% * 0.5)；UGC类考虑闲时流量半价，目前整体占比大概15%,只需要在不使用CDN的情况时考虑
+                                            "name": "流量费",
+                                            "formula": "DECEND_FLOW_UNIT_PRICE * #fileAvgSize * #sourceFileAmount * #vistAmount - DECEND_FLOW_UNIT_PRICE * #fileAvgSize * #sourceFileAmount * #vistAmount * 0.15 * 0.5",
+                                            "rule": {
+                                                "DECEND_FLOW_UNIT_PRICE": "#fileAvgSize * #sourceFileAmount * #vistAmount - #fileAvgSize * #sourceFileAmount * #vistAmount * 0.15 * 0.5"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        ]
+                    },
+
+                    {
+                        "id": "normalWebsit", // 不能为空，同一个场景组下的场景id不能重复--企业官网或个人站点
+                        "name": "企业官网或个人站点",
+                        "isDefault": false, // 是否默认被激活
+                        "commonOperands": [{ // 操作因子,可以配置多个操作因子
+                            "id": "useRegion", // 不能为空，同一个场景下的操作因子id不能重复
+                            "name": "使用区域", // 显示文案
+                            "type": "select", // 操作因子类型,枚举值
+                            "units": "regionUnits"
+                        }, {
+                            "id": "vistAmount",
+                            "name": "网站每月访问",
+                            "type": "textFieldSelect",
+                            "units": [{
+                                "name": "人次",
+                                "value": "1"
+                            }]
+                        }, {
+                            "id": "sourceFileAmount",
+                            "name": "页面静态文件数量",
+                            "type": "textFieldSelect",
+                            "units": [{
+                                "name": "个",
+                                "value": "1"
+                            }]
+                        }, {
+                            "id": "fileAvgSize",
+                            "name": "文件平均大小",
+                            "type": "textFieldSelect",
+                            "units": "byteUnits"
+                        }, {
+                            "id": "ifUseCdn",
+                            "name": "是否使用CDN加速",
+                            "type": "radioButton"
+                        }],
+                        "subScenes": [ // 子业务场景
+                            {
+                                "id": "useCDN",
+                                "name": "使用CDN加速",
+                                "isDefault": false,
+                                "expression": { // 表达式
+                                    "id": "useCDN",
+                                    "formula": "@storageFee + @cdnNetworkFee + @ossBackToResourceFee + @requestFee", // 公式，@符号表示使用子表达式的值
+                                    "subExpression": { // 子表达式
+                                        "storageFee": { // key 对应子表达式的id
+                                            "id": "storageFee", //区域存储费用单价 * 文件平均大小 * 文件数量 
+                                            "name": "存储费", // 子表达式显示文案
+                                            "formula": "REGION_STORAGE_UNIT_PRICE * #fileAvgSize * #sourceFileAmount", // 公式，全大写的常量对应一种计费规则
+                                            "rule": { // 描述公式的依赖规则
+                                                "REGION_STORAGE_UNIT_PRICE": "#fileAvgSize * #sourceFileAmount" // #符号表示使用操作因子的值
+                                            }
+                                        },
+                                        "requestFee": {
+                                            "id": "requestFee", //(按存储费用+流量费用)的3%估算。即（存储费+流量费） * 3%
+                                            "name": "请求数费",
+                                            "formula": "(@storageFee + @ossBackToResourceFee)* 0.03"
+                                        },
+                                        "ossBackToResourceFee": {
+                                            "id": "ossBackToResourceFee", //文件大小 * 文件数量 * 区域回源流量单价 
+                                            "name": "回源流量费",
+                                            "formula": "RETURN_FLOW_UNIT_PRICE * #fileAvgSize * #sourceFileAmount",
+                                            "rule": {
+                                                "RETURN_FLOW_UNIT_PRICE": "#fileAvgSize * #sourceFileAmount"
+                                            }
+                                        },
+                                        "cdnNetworkFee": {
+                                            "id": "cdnNetworkFee", //文件大小 * 文件数量 * 访问人数 * CDN流量单价 
+                                            "name": "CDN流量费",
+                                            "formula": "CDN_FLOW_UNIT_PRICE * #fileAvgSize * #sourceFileAmount * #vistAmount",
+                                            "rule": {
+                                                "CDN_FLOW_UNIT_PRICE": "#fileAvgSize * #sourceFileAmount * #vistAmount"
+                                            }
+                                        }
+                                    }
+                                }
+                            }, { // 子业务场景，同上
+                                "id": "withoutCDN",
+                                "name": "不使用CDN加速",
+                                "isDefault": true,
+                                "expression": {
+                                    "id": "withoutCDN",
+                                    "formula": "@storageFee + @ossNetworkFee + @requestFee",
+                                    "subExpression": {
+                                        "storageFee": {
+                                            "id": "storageFee",
+                                            "name": "存储费",
+                                            "formula": "REGION_STORAGE_UNIT_PRICE * #fileAvgSize * #sourceFileAmount",
+                                            "rule": {
+                                                "REGION_STORAGE_UNIT_PRICE": "#fileAvgSize * #sourceFileAmount"
+                                            }
+                                        },
+                                        "requestFee": {
+                                            "id": "requestFee",
+                                            "name": "请求数费",
+                                            "formula": "(@storageFee + @ossNetworkFee)* 0.03"
+                                        },
+                                        "ossNetworkFee": {
+                                            "id": "ossNetworkFee", //区域OSS下行流量单价 * 文件大小 * 文件数量 * 访问人次
+                                            "name": "流量费",
+                                            "formula": "DECEND_FLOW_UNIT_PRICE * #fileAvgSize * #sourceFileAmount * #vistAmount",
+                                            "rule": {
+                                                "DECEND_FLOW_UNIT_PRICE": "#fileAvgSize * #sourceFileAmount * #vistAmount"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        ]
+                    },
+                ]
+            }
+        ]
+    }    
+</script>
+
+<script src="//g.alicdn.com/aliyun/console/1.3.24/vendor/requirejs/require.js"></script>
+</head>
+
+<body class="product product-oss nav-at-1" data-spm="572084">
+<div class="wrap-1">
+    <!-- header begin -->
+    <div class="y-page-title">
+        <div class="y-row">
+            <div class="y-span12 y-last">
+                <div class="y-page-title-box ">
+                    <h1><a href="http://www.aliyun.com/product/oss/recommend.html" target="_blank">计算工具</a></h1>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- header end -->
+    <div ui-view class="console-container" ng-animate="{enter:'fade-enter'}"></div>
+    <div data-ng-controller="aliyunCommonController"></div>
+    <div growl></div>
+</div>
+
+<script src="//g.alicdn.com/aliyun/ossCalculator/0.0.8/scripts/ossCalculator/ossCalculatorConsole.js" charset="utf-8"></script>
+
+<script>
+    require(['ossCalculator/bootstrap'], function(bootstrap){});
+</script>
+
+</body>
+</html>
